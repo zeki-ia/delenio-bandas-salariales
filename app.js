@@ -156,4 +156,20 @@
   sortSelect.addEventListener("change", update);
 
   update();
+
+  // View tabs: Panorama del mercado <-> Bandas salariales
+  const viewTabs = document.querySelectorAll(".view-tab");
+  const viewPanels = {
+    panorama: document.getElementById("panelPanorama"),
+    bandas: document.getElementById("panelBandas"),
+  };
+  viewTabs.forEach((tab) => {
+    tab.addEventListener("click", () => {
+      viewTabs.forEach((t) => t.classList.remove("active"));
+      tab.classList.add("active");
+      Object.entries(viewPanels).forEach(([key, panel]) => {
+        panel.classList.toggle("active", key === tab.dataset.panel);
+      });
+    });
+  });
 })();

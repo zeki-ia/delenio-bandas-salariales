@@ -27,6 +27,14 @@
   </div>
 </section>
 
+<nav class="view-tabs" aria-label="Secciones">
+  <div class="wrap view-tabs-inner">
+    <button type="button" class="view-tab active" data-panel="panorama">Panorama del mercado laboral 2026</button>
+    <button type="button" class="view-tab" data-panel="bandas">Bandas salariales por rol</button>
+  </div>
+</nav>
+
+<div id="panelPanorama" class="view-panel active">
   <section class="insights" aria-label="Panorama del mercado laboral">
     <div class="wrap">
       <h2>Panorama del mercado laboral 2026</h2>
@@ -140,37 +148,40 @@
       </div>
     </div>
   </section>
+</div>
 
-<main class="wrap">
+<div id="panelBandas" class="view-panel">
+  <main class="wrap">
 
-  <section class="controls" aria-label="Filtros">
-    <div class="control-group">
-      <label for="areaFilter">Área</label>
-      <select id="areaFilter">
-        <option value="all">Todas las áreas</option>
-      </select>
-    </div>
-    <div class="control-group">
-      <label for="sortSelect">Ordenar por</label>
-      <select id="sortSelect">
-        <option value="alpha">Nombre (A-Z)</option>
-        <option value="min-desc">Salario mínimo (mayor a menor)</option>
-        <option value="max-desc">Salario máximo (mayor a menor)</option>
-      </select>
-    </div>
-  </section>
+    <section class="controls" aria-label="Filtros">
+      <div class="control-group">
+        <label for="areaFilter">Área</label>
+        <select id="areaFilter">
+          <option value="all">Todas las áreas</option>
+        </select>
+      </div>
+      <div class="control-group">
+        <label for="sortSelect">Ordenar por</label>
+        <select id="sortSelect">
+          <option value="alpha">Nombre (A-Z)</option>
+          <option value="min-desc">Salario mínimo (mayor a menor)</option>
+          <option value="max-desc">Salario máximo (mayor a menor)</option>
+        </select>
+      </div>
+    </section>
 
-  <div id="resultsMeta" class="results-meta"></div>
+    <div id="resultsMeta" class="results-meta"></div>
 
-  <section id="areaTabs" class="area-tabs" aria-label="Áreas rápidas"></section>
+    <section id="areaTabs" class="area-tabs" aria-label="Áreas rápidas"></section>
 
-  <section id="rolesGrid" class="roles-grid"></section>
+    <section id="rolesGrid" class="roles-grid"></section>
 
-  <p id="emptyState" class="empty-state" hidden>
-    No encontramos roles para esta selección. Probá con otra área.
-  </p>
+    <p id="emptyState" class="empty-state" hidden>
+      No encontramos roles para esta selección. Probá con otra área.
+    </p>
 
-</main>
+  </main>
+</div>
 
 <section class="cta-services">
   <div class="wrap cta-inner">
