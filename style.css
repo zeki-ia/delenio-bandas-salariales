@@ -74,6 +74,25 @@ html, body {
   font-size: 16px;
   margin: 0;
 }
+.hero-cta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px 20px;
+  margin-top: 22px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+}
+.hero-cta-text {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--ink);
+}
+.hero-cta-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
 
 /* View tabs */
 .view-tabs {
@@ -392,6 +411,10 @@ html, body {
 .btn-primary {
   background: #fff;
   color: var(--blue);
+}
+.btn-hero-primary {
+  background: var(--blue);
+  color: #fff;
 }
 .btn-whatsapp {
   background: #25D366;
