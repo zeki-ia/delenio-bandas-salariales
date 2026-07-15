@@ -14,6 +14,11 @@
     return "$" + arsFmt.format(n);
   }
 
+  const industryLabelById = {};
+  INDUSTRY_OPTIONS.forEach((ind) => {
+    industryLabelById[ind.id] = ind.label;
+  });
+
   // Flatten dataset: one row per role, tagged with its area.
   const allRoles = [];
   DATA.areas.forEach((area) => {
@@ -28,6 +33,7 @@
         name: role.name,
         entries: role.entries,
         industries: role.industries || null,
+        randstadByIndustry: role.randstadByIndustry || null,
         overallMin: Math.min(...mins),
         overallMax: Math.max(...maxs),
       });
@@ -74,9 +80,31 @@
     });
   }
 
-  function renderCard(role) {
+  // Si hay una industria elegida y el rol tiene banda Randstad para esa industria puntual,
+  // reemplaza las filas agregadas de Randstad (Buenos Aires / Nacional entre industrias)
+  // por el rango específico de esa industria.
+  function entriesForDisplay(role, industryId) {
+    const byIndustry = industryId !== "all" && role.randstadByIndustry ? role.randstadByIndustry[industryId] : null;
+    if (!byIndustry) return role.entries;
+
+    const [baMin, baMax, natMin, natMax] = byIndustry;
+    const industryLabel = industryLabelById[industryId] || industryId;
+    const swapped = [
+      { fuente: "Randstad Arg. jul. 2026", segmento: `Buenos Aires · ${industryLabel} (Semi Senior)`, min: baMin, max: baMax },
+      { fuente: "Randstad Arg. jul. 2026", segmento: `Nacional · ${industryLabel} (Semi Senior)`, min: natMin, max: natMax },
+    ];
+    return role.entries.filter((e) => !e.fuente.startsWith("Randstad")).concat(swapped);
+  }
+
+  function renderCard(role, industryId) {
     const card = document.createElement("article");
     card.className = "role-card";
+
+    const entries = entriesForDisplay(role, industryId);
+    const mins = entries.map((e) => e.min ?? e.max);
+    const maxs = entries.map((e) => e.max ?? e.min);
+    const overallMin = Math.min(...mins);
+    const overallMax = Math.max(...maxs);
 
     const head = document.createElement("div");
     head.className = "role-card-head";
@@ -95,19 +123,20 @@
     const amt = document.createElement("span");
     amt.className = "amt";
     amt.textContent =
-      role.overallMin === role.overallMax
-        ? fmtARS(role.overallMin)
-        : `${fmtARS(role.overallMin)} – ${fmtARS(role.overallMax)}`;
+      overallMin === overallMax ? fmtARS(overallMin) : `${fmtARS(overallMin)} – ${fmtARS(overallMax)}`;
     const lbl = document.createElement("span");
     lbl.className = "lbl";
-    lbl.textContent = "rango bruto mensual (ARS) entre fuentes";
+    lbl.textContent =
+      industryId === "all"
+        ? "rango bruto mensual (ARS) entre fuentes"
+        : `rango bruto mensual (ARS) · ${industryLabelById[industryId] || industryId}`;
     summary.appendChild(amt);
     summary.appendChild(lbl);
     card.appendChild(summary);
 
     const list = document.createElement("div");
     list.className = "entry-list";
-    role.entries.forEach((e) => {
+    entries.forEach((e) => {
       const row = document.createElement("div");
       row.className = "entry-row";
       const range =
@@ -144,12 +173,23 @@
       filtered = filtered.filter((r) => r.industries && r.industries.includes(industryId));
     }
 
+    // Al filtrar por industria, ordenar según el rango específico de esa industria, no el agregado.
+    const sortRange =
+      industryId === "all"
+        ? (r) => [r.overallMin, r.overallMax]
+        : (r) => {
+            const entries = entriesForDisplay(r, industryId);
+            const mins = entries.map((e) => e.min ?? e.max);
+            const maxs = entries.map((e) => e.max ?? e.min);
+            return [Math.min(...mins), Math.max(...maxs)];
+          };
+
     if (sortBy === "alpha") {
       filtered.sort((a, b) => a.name.localeCompare(b.name, "es"));
     } else if (sortBy === "min-desc") {
-      filtered.sort((a, b) => b.overallMin - a.overallMin);
+      filtered.sort((a, b) => sortRange(b)[0] - sortRange(a)[0]);
     } else if (sortBy === "max-desc") {
-      filtered.sort((a, b) => b.overallMax - a.overallMax);
+      filtered.sort((a, b) => sortRange(b)[1] - sortRange(a)[1]);
     }
 
     rolesGrid.innerHTML = "";
@@ -166,7 +206,7 @@
         : `${countText} · el corte por industria proviene solo de Randstad`;
 
     const frag = document.createDocumentFragment();
-    filtered.forEach((role) => frag.appendChild(renderCard(role)));
+    filtered.forEach((role) => frag.appendChild(renderCard(role, industryId)));
     rolesGrid.appendChild(frag);
   }
 
