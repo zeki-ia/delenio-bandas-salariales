@@ -1,5 +1,6 @@
 (function () {
   const areaFilter = document.getElementById("areaFilter");
+  const industryFilter = document.getElementById("industryFilter");
   const sortSelect = document.getElementById("sortSelect");
   const rolesGrid = document.getElementById("rolesGrid");
   const emptyState = document.getElementById("emptyState");
@@ -26,6 +27,7 @@
         areaLabel: area.label,
         name: role.name,
         entries: role.entries,
+        industries: role.industries || null,
         overallMin: Math.min(...mins),
         overallMax: Math.max(...maxs),
       });
@@ -38,6 +40,14 @@
     opt.value = area.id;
     opt.textContent = area.label;
     areaFilter.appendChild(opt);
+  });
+
+  // Populate industry <select> (dato disponible solo para roles con banda Randstad)
+  INDUSTRY_OPTIONS.forEach((ind) => {
+    const opt = document.createElement("option");
+    opt.value = ind.id;
+    opt.textContent = ind.label;
+    industryFilter.appendChild(opt);
   });
 
   // Quick-select area tabs
@@ -124,11 +134,15 @@
 
   function update() {
     const areaId = areaFilter.value;
+    const industryId = industryFilter.value;
     const sortBy = sortSelect.value;
 
     renderTabs(areaId);
 
     let filtered = allRoles.filter((r) => areaId === "all" || r.areaId === areaId);
+    if (industryId !== "all") {
+      filtered = filtered.filter((r) => r.industries && r.industries.includes(industryId));
+    }
 
     if (sortBy === "alpha") {
       filtered.sort((a, b) => a.name.localeCompare(b.name, "es"));
@@ -145,7 +159,11 @@
       return;
     }
     emptyState.hidden = true;
-    resultsMeta.textContent = `${filtered.length} rol${filtered.length === 1 ? "" : "es"} encontrado${filtered.length === 1 ? "" : "s"}`;
+    const countText = `${filtered.length} rol${filtered.length === 1 ? "" : "es"} encontrado${filtered.length === 1 ? "" : "s"}`;
+    resultsMeta.textContent =
+      industryId === "all"
+        ? countText
+        : `${countText} · el corte por industria proviene solo de Randstad`;
 
     const frag = document.createDocumentFragment();
     filtered.forEach((role) => frag.appendChild(renderCard(role)));
@@ -153,6 +171,7 @@
   }
 
   areaFilter.addEventListener("change", update);
+  industryFilter.addEventListener("change", update);
   sortSelect.addEventListener("change", update);
 
   update();

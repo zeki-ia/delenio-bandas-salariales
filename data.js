@@ -655,6 +655,113 @@ const AREA_LABELS_FOR_NEW = {
   calidad: "Calidad",
 };
 
+// Industrias relevadas por Randstad para cada rol (varía: la mayoría de 10,
+// algunos roles operativos tienen menos porque el informe no las releva para ese rol).
+const RANDSTAD_INDUSTRIES = [
+  ["finanzas", "Gerente de administración y finanzas", ["Automotriz", "Banca & Serv Financieros", "Consumo masivo", "Gas, Petróleo y Minería", "IT", "Lab & Pharma", "Manufactura", "Retail & Comercio", "Servicios", "Transporte y logística"]],
+  ["finanzas", "Gerente de impuestos", ["Automotriz", "Banca & Serv Financieros", "Consumo masivo", "Gas, Petróleo y Minería", "IT", "Lab & Pharma", "Manufactura", "Retail & Comercio", "Servicios", "Transporte y logística"]],
+  ["finanzas", "Gerente de control de gestión", ["Automotriz", "Banca & Serv Financieros", "Consumo masivo", "Gas, Petróleo y Minería", "IT", "Lab & Pharma", "Manufactura", "Retail & Comercio", "Servicios", "Transporte y logística"]],
+  ["finanzas", "Gerente contable", ["Automotriz", "Banca & Serv Financieros", "Consumo masivo", "Gas, Petróleo y Minería", "IT", "Lab & Pharma", "Manufactura", "Retail & Comercio", "Servicios", "Transporte y logística"]],
+  ["finanzas", "Jefe de control de gestión", ["Automotriz", "Banca & Serv Financieros", "Consumo masivo", "Gas, Petróleo y Minería", "IT", "Lab & Pharma", "Manufactura", "Retail & Comercio", "Servicios", "Transporte y logística"]],
+  ["finanzas", "Jefe contable", ["Automotriz", "Banca & Serv Financieros", "Consumo masivo", "Gas, Petróleo y Minería", "IT", "Lab & Pharma", "Manufactura", "Retail & Comercio", "Servicios", "Transporte y logística"]],
+  ["supply", "Gerente de Compras", ["Automotriz", "Banca & Serv Financieros", "Consumo masivo", "Gas, Petróleo y Minería", "IT", "Lab & Pharma", "Manufactura", "Retail & Comercio", "Servicios", "Transporte y logística"]],
+  ["supply", "Gerente de Supply Chain", ["Automotriz", "Consumo masivo", "Gas, Petróleo y Minería", "IT", "Lab & Pharma", "Manufactura", "Retail & Comercio", "Servicios", "Transporte y logística"]],
+  ["supply", "Jefe de Compras", ["Automotriz", "Banca & Serv Financieros", "Consumo masivo", "Gas, Petróleo y Minería", "IT", "Lab & Pharma", "Manufactura", "Retail & Comercio", "Servicios", "Transporte y logística"]],
+  ["supply", "Gerente de Comex", ["Automotriz", "Consumo masivo", "Gas, Petróleo y Minería", "Lab & Pharma", "Manufactura", "Retail & Comercio", "Servicios", "Transporte y logística"]],
+  ["rrhh", "Gerente de RR.HH. / HR Manager", ["Automotriz", "Banca & Serv Financieros", "Consumo masivo", "Gas, Petróleo y Minería", "IT", "Lab & Pharma", "Manufactura", "Retail & Comercio", "Servicios", "Transporte y logística"]],
+  ["rrhh", "Jefe de RR.HH.", ["Automotriz", "Banca & Serv Financieros", "Consumo masivo", "Gas, Petróleo y Minería", "IT", "Lab & Pharma", "Manufactura", "Retail & Comercio", "Servicios", "Transporte y logística"]],
+  ["rrhh", "Analista de RR.HH.", ["Automotriz", "Banca & Serv Financieros", "Consumo masivo", "Gas, Petróleo y Minería", "IT", "Lab & Pharma", "Manufactura", "Retail & Comercio", "Servicios", "Transporte y logística"]],
+  ["rrhh", "HRBP (HR Business Partner)", ["Automotriz", "Banca & Serv Financieros", "Consumo masivo", "Gas, Petróleo y Minería", "IT", "Lab & Pharma", "Manufactura", "Retail & Comercio", "Servicios", "Transporte y logística"]],
+  ["supply", "Gerente de Logística", ["Automotriz", "Consumo masivo", "Gas, Petróleo y Minería", "Lab & Pharma", "Manufactura", "Retail & Comercio", "Servicios", "Transporte y logística"]],
+  ["supply", "Jefe de Logística", ["Automotriz", "Consumo masivo", "Gas, Petróleo y Minería", "Lab & Pharma", "Manufactura", "Retail & Comercio", "Servicios", "Transporte y logística"]],
+  ["ingenieria", "Gerente de mantenimiento", ["Automotriz", "Banca & Serv Financieros", "Consumo masivo", "Gas, Petróleo y Minería", "Lab & Pharma", "Manufactura", "Retail & Comercio", "Servicios", "Transporte y logística"]],
+  ["ingenieria", "Jefe de mantenimiento", ["Automotriz", "Banca & Serv Financieros", "Consumo masivo", "Gas, Petróleo y Minería", "Lab & Pharma", "Manufactura", "Retail & Comercio", "Servicios", "Transporte y logística"]],
+  ["ingenieria", "Jefe de producción", ["Automotriz", "Consumo masivo", "Gas, Petróleo y Minería", "Lab & Pharma", "Manufactura", "Retail & Comercio", "Servicios", "Transporte y logística"]],
+  ["tecnologia", "Gerente de sistemas / TI", ["Automotriz", "Banca & Serv Financieros", "Consumo masivo", "Gas, Petróleo y Minería", "IT", "Lab & Pharma", "Manufactura", "Retail & Comercio", "Servicios", "Transporte y logística"]],
+  ["tecnologia", "DevOps Engineer", ["Automotriz", "Banca & Serv Financieros", "Consumo masivo", "Gas, Petróleo y Minería", "IT", "Lab & Pharma", "Manufactura", "Retail & Comercio", "Servicios", "Transporte y logística"]],
+  ["tecnologia", "Scrum Master", ["Automotriz", "Banca & Serv Financieros", "Consumo masivo", "Gas, Petróleo y Minería", "IT", "Lab & Pharma", "Manufactura", "Retail & Comercio", "Servicios", "Transporte y logística"]],
+  ["tecnologia", "Sysadmin", ["Automotriz", "Banca & Serv Financieros", "Consumo masivo", "Gas, Petróleo y Minería", "IT", "Lab & Pharma", "Manufactura", "Retail & Comercio", "Servicios", "Transporte y logística"]],
+  ["tecnologia", "Arquitecto de Software / Solutions Architect", ["Automotriz", "Banca & Serv Financieros", "Consumo masivo", "Gas, Petróleo y Minería", "IT", "Lab & Pharma", "Manufactura", "Retail & Comercio", "Servicios", "Transporte y logística"]],
+  ["tecnologia", "Backend Developer", ["Automotriz", "Banca & Serv Financieros", "Consumo masivo", "Gas, Petróleo y Minería", "IT", "Lab & Pharma", "Manufactura", "Retail & Comercio", "Servicios", "Transporte y logística"]],
+  ["tecnologia", "Functional Analyst", ["Automotriz", "Banca & Serv Financieros", "Consumo masivo", "Gas, Petróleo y Minería", "IT", "Lab & Pharma", "Manufactura", "Retail & Comercio", "Servicios", "Transporte y logística"]],
+  ["tecnologia", "QA / Testing", ["Automotriz", "Banca & Serv Financieros", "Consumo masivo", "Gas, Petróleo y Minería", "IT", "Lab & Pharma", "Manufactura", "Retail & Comercio", "Servicios", "Transporte y logística"]],
+  ["tecnologia", "DBA", ["Automotriz", "Banca & Serv Financieros", "Consumo masivo", "Gas, Petróleo y Minería", "IT", "Lab & Pharma", "Manufactura", "Retail & Comercio", "Servicios", "Transporte y logística"]],
+  ["tecnologia", "Frontend Developer", ["Automotriz", "Banca & Serv Financieros", "Consumo masivo", "Gas, Petróleo y Minería", "IT", "Lab & Pharma", "Manufactura", "Retail & Comercio", "Servicios", "Transporte y logística"]],
+  ["tecnologia", "Soporte Técnico / Help Desk", ["Automotriz", "Banca & Serv Financieros", "Consumo masivo", "Gas, Petróleo y Minería", "IT", "Lab & Pharma", "Manufactura", "Retail & Comercio", "Servicios", "Transporte y logística"]],
+  ["marketing", "Jefe de Marketing", ["Automotriz", "Banca & Serv Financieros", "Consumo masivo", "Gas, Petróleo y Minería", "IT", "Lab & Pharma", "Manufactura", "Retail & Comercio", "Servicios", "Transporte y logística"]],
+  ["marketing", "Analista de Marketing Digital", ["Automotriz", "Banca & Serv Financieros", "Consumo masivo", "Gas, Petróleo y Minería", "IT", "Lab & Pharma", "Manufactura", "Retail & Comercio", "Servicios", "Transporte y logística"]],
+  ["ventas", "Jefe de Ventas", ["Automotriz", "Banca & Serv Financieros", "Consumo masivo", "Gas, Petróleo y Minería", "IT", "Lab & Pharma", "Manufactura", "Retail & Comercio", "Servicios", "Transporte y logística"]],
+  ["ventas", "Key Account Manager", ["Automotriz", "Banca & Serv Financieros", "Consumo masivo", "Gas, Petróleo y Minería", "IT", "Lab & Pharma", "Manufactura", "Retail & Comercio", "Servicios", "Transporte y logística"]],
+  ["ventas", "Analista Comercial", ["Automotriz", "Banca & Serv Financieros", "Consumo masivo", "Gas, Petróleo y Minería", "IT", "Lab & Pharma", "Manufactura", "Retail & Comercio", "Servicios", "Transporte y logística"]],
+  ["ventas", "Ejecutivo de Cuentas", ["Automotriz", "Banca & Serv Financieros", "Consumo masivo", "Gas, Petróleo y Minería", "IT", "Lab & Pharma", "Manufactura", "Retail & Comercio", "Servicios", "Transporte y logística"]],
+  ["finanzas", "CFO Director de Administración y Finanzas", ["Automotriz", "Banca & Serv Financieros", "Consumo masivo", "Gas, Petróleo y Minería", "IT", "Lab & Pharma", "Manufactura", "Retail & Comercio", "Servicios", "Transporte y logística"]],
+  ["finanzas", "Controller", ["Automotriz", "Banca & Serv Financieros", "Consumo masivo", "Gas, Petróleo y Minería", "IT", "Lab & Pharma", "Manufactura", "Retail & Comercio", "Servicios", "Transporte y logística"]],
+  ["finanzas", "Gerente de Tesorería", ["Automotriz", "Banca & Serv Financieros", "Consumo masivo", "Gas, Petróleo y Minería", "IT", "Lab & Pharma", "Manufactura", "Retail & Comercio", "Servicios", "Transporte y logística"]],
+  ["finanzas", "Gerente de Cobranzas", ["Automotriz", "Banca & Serv Financieros", "Consumo masivo", "Gas, Petróleo y Minería", "IT", "Lab & Pharma", "Manufactura", "Retail & Comercio", "Servicios", "Transporte y logística"]],
+  ["finanzas", "Gerente de Auditoría", ["Automotriz", "Banca & Serv Financieros", "Consumo masivo", "Gas, Petróleo y Minería", "IT", "Lab & Pharma", "Manufactura", "Retail & Comercio", "Servicios", "Transporte y logística"]],
+  ["finanzas", "Gerente de Legales", ["Automotriz", "Banca & Serv Financieros", "Consumo masivo", "Gas, Petróleo y Minería", "IT", "Lab & Pharma", "Manufactura", "Retail & Comercio", "Servicios", "Transporte y logística"]],
+  ["finanzas", "Jefe de Legales", ["Automotriz", "Banca & Serv Financieros", "Consumo masivo", "Gas, Petróleo y Minería", "IT", "Lab & Pharma", "Manufactura", "Retail & Comercio", "Servicios", "Transporte y logística"]],
+  ["finanzas", "Jefe de Tesorería", ["Automotriz", "Banca & Serv Financieros", "Consumo masivo", "Gas, Petróleo y Minería", "IT", "Lab & Pharma", "Manufactura", "Retail & Comercio", "Servicios", "Transporte y logística"]],
+  ["finanzas", "Jefe de Impuestos", ["Automotriz", "Banca & Serv Financieros", "Consumo masivo", "Gas, Petróleo y Minería", "IT", "Lab & Pharma", "Manufactura", "Retail & Comercio", "Servicios", "Transporte y logística"]],
+  ["finanzas", "Jefe de Cobranzas", ["Automotriz", "Banca & Serv Financieros", "Consumo masivo", "Gas, Petróleo y Minería", "IT", "Lab & Pharma", "Manufactura", "Retail & Comercio", "Servicios", "Transporte y logística"]],
+  ["finanzas", "Jefe de Auditoría", ["Automotriz", "Banca & Serv Financieros", "Consumo masivo", "Gas, Petróleo y Minería", "IT", "Lab & Pharma", "Manufactura", "Retail & Comercio", "Servicios", "Transporte y logística"]],
+  ["finanzas", "Jefe de Administración y finanzas", ["Automotriz", "Banca & Serv Financieros", "Consumo masivo", "Gas, Petróleo y Minería", "IT", "Lab & Pharma", "Manufactura", "Retail & Comercio", "Servicios", "Transporte y logística"]],
+  ["finanzas", "Abogado Corporativo", ["Automotriz", "Banca & Serv Financieros", "Consumo masivo", "Gas, Petróleo y Minería", "IT", "Lab & Pharma", "Manufactura", "Retail & Comercio", "Servicios", "Transporte y logística"]],
+  ["finanzas", "Analista de Contabilidad", ["Automotriz", "Banca & Serv Financieros", "Consumo masivo", "Gas, Petróleo y Minería", "IT", "Lab & Pharma", "Manufactura", "Retail & Comercio", "Servicios", "Transporte y logística"]],
+  ["finanzas", "Analista de Auditoría", ["Automotriz", "Banca & Serv Financieros", "Consumo masivo", "Gas, Petróleo y Minería", "IT", "Lab & Pharma", "Manufactura", "Retail & Comercio", "Servicios", "Transporte y logística"]],
+  ["finanzas", "Analista de Control de Gestión", ["Automotriz", "Banca & Serv Financieros", "Consumo masivo", "Gas, Petróleo y Minería", "IT", "Lab & Pharma", "Manufactura", "Retail & Comercio", "Servicios", "Transporte y logística"]],
+  ["finanzas", "Analista de Impuestos", ["Automotriz", "Banca & Serv Financieros", "Consumo masivo", "Gas, Petróleo y Minería", "IT", "Lab & Pharma", "Manufactura", "Retail & Comercio", "Servicios", "Transporte y logística"]],
+  ["finanzas", "Analista de Tesorería", ["Automotriz", "Banca & Serv Financieros", "Consumo masivo", "Gas, Petróleo y Minería", "IT", "Lab & Pharma", "Manufactura", "Retail & Comercio", "Servicios", "Transporte y logística"]],
+  ["finanzas", "Analista de Cobranzas", ["Automotriz", "Banca & Serv Financieros", "Consumo masivo", "Gas, Petróleo y Minería", "IT", "Lab & Pharma", "Manufactura", "Retail & Comercio", "Servicios", "Transporte y logística"]],
+  ["finanzas", "Analista de Administración y finanzas", ["Automotriz", "Banca & Serv Financieros", "Consumo masivo", "Gas, Petróleo y Minería", "IT", "Lab & Pharma", "Manufactura", "Retail & Comercio", "Servicios", "Transporte y logística"]],
+  ["ventas", "Director comercial", ["Automotriz", "Banca & Serv Financieros", "Consumo masivo", "Gas, Petróleo y Minería", "IT", "Lab & Pharma", "Manufactura", "Retail & Comercio", "Servicios", "Transporte y logística"]],
+  ["ventas", "Director de Expansión y Desarrollo", ["Automotriz", "Banca & Serv Financieros", "Consumo masivo", "Gas, Petróleo y Minería", "IT", "Lab & Pharma", "Manufactura", "Retail & Comercio", "Servicios", "Transporte y logística"]],
+  ["ventas", "Gerente comercial", ["Automotriz", "Banca & Serv Financieros", "Consumo masivo", "Gas, Petróleo y Minería", "IT", "Lab & Pharma", "Manufactura", "Retail & Comercio", "Servicios", "Transporte y logística"]],
+  ["marketing", "Director de marketing", ["Automotriz", "Banca & Serv Financieros", "Consumo masivo", "Gas, Petróleo y Minería", "IT", "Lab & Pharma", "Manufactura", "Retail & Comercio", "Servicios", "Transporte y logística"]],
+  ["marketing", "Gerente de Marketing", ["Automotriz", "Banca & Serv Financieros", "Consumo masivo", "Gas, Petróleo y Minería", "IT", "Lab & Pharma", "Manufactura", "Retail & Comercio", "Servicios", "Transporte y logística"]],
+  ["marketing", "Jefe de Comunicaciones", ["Automotriz", "Banca & Serv Financieros", "Consumo masivo", "Gas, Petróleo y Minería", "IT", "Lab & Pharma", "Manufactura", "Retail & Comercio", "Servicios", "Transporte y logística"]],
+  ["marketing", "Gerente de Comunicaciones", ["Automotriz", "Banca & Serv Financieros", "Consumo masivo", "Gas, Petróleo y Minería", "IT", "Lab & Pharma", "Manufactura", "Retail & Comercio", "Servicios", "Transporte y logística"]],
+  ["marketing", "Analista de Comunicaciones", ["Automotriz", "Banca & Serv Financieros", "Consumo masivo", "Gas, Petróleo y Minería", "IT", "Lab & Pharma", "Manufactura", "Retail & Comercio", "Servicios", "Transporte y logística"]],
+  ["marketing", "Analista de Marketing", ["Automotriz", "Banca & Serv Financieros", "Consumo masivo", "Gas, Petróleo y Minería", "IT", "Lab & Pharma", "Manufactura", "Retail & Comercio", "Servicios", "Transporte y logística"]],
+  ["marketing", "Community Manager", ["Automotriz", "Banca & Serv Financieros", "Consumo masivo", "Gas, Petróleo y Minería", "IT", "Lab & Pharma", "Manufactura", "Retail & Comercio", "Servicios", "Transporte y logística"]],
+  ["marketing", "Business Developer Manager", ["Automotriz", "Banca & Serv Financieros", "Consumo masivo", "Gas, Petróleo y Minería", "IT", "Lab & Pharma", "Manufactura", "Retail & Comercio", "Servicios", "Transporte y logística"]],
+  ["marketing", "Responsable de E-commerce", ["Automotriz", "Banca & Serv Financieros", "Consumo masivo", "Gas, Petróleo y Minería", "IT", "Lab & Pharma", "Manufactura", "Retail & Comercio", "Servicios", "Transporte y logística"]],
+  ["ingenieria", "Director de Operaciones", ["Automotriz", "Banca & Serv Financieros", "Consumo masivo", "Gas, Petróleo y Minería", "IT", "Lab & Pharma", "Manufactura", "Retail & Comercio", "Servicios", "Transporte y logística"]],
+  ["ingenieria", "Ingeniero de mantenimiento", ["Automotriz", "Banca & Serv Financieros", "Consumo masivo", "Gas, Petróleo y Minería", "Lab & Pharma", "Manufactura", "Retail & Comercio", "Servicios", "Transporte y logística"]],
+  ["ingenieria", "Gerente de Planta/producción", ["Automotriz", "Consumo masivo", "Gas, Petróleo y Minería", "Lab & Pharma", "Manufactura", "Retail & Comercio", "Servicios", "Transporte y logística"]],
+  ["ingenieria", "Ingeniero de Producción", ["Automotriz", "Consumo masivo", "Gas, Petróleo y Minería", "Lab & Pharma", "Manufactura", "Retail & Comercio", "Servicios", "Transporte y logística"]],
+  ["rrhh", "Director de Recursos Humanos", ["Automotriz", "Banca & Serv Financieros", "Consumo masivo", "Gas, Petróleo y Minería", "IT", "Lab & Pharma", "Manufactura", "Retail & Comercio", "Servicios", "Transporte y logística"]],
+  ["supply", "Jefe de Comex", ["Automotriz", "Consumo masivo", "Gas, Petróleo y Minería", "Lab & Pharma", "Manufactura", "Retail & Comercio", "Servicios", "Transporte y logística"]],
+  ["supply", "Jefe de Supply Chain", ["Automotriz", "Banca & Serv Financieros", "Consumo masivo", "Gas, Petróleo y Minería", "IT", "Lab & Pharma", "Manufactura", "Retail & Comercio", "Servicios", "Transporte y logística"]],
+  ["supply", "Analista de Compras", ["Automotriz", "Banca & Serv Financieros", "Consumo masivo", "Gas, Petróleo y Minería", "IT", "Lab & Pharma", "Manufactura", "Retail & Comercio", "Servicios", "Transporte y logística"]],
+  ["supply", "Jefe de Planificación y Demanda", ["Automotriz", "Consumo masivo", "Gas, Petróleo y Minería", "Lab & Pharma", "Manufactura", "Retail & Comercio"]],
+  ["supply", "Analista de Planificación y Demanda", ["Automotriz", "Consumo masivo", "Gas, Petróleo y Minería", "Lab & Pharma", "Manufactura", "Retail & Comercio"]],
+  ["supply", "Analista de Comex", ["Automotriz", "Consumo masivo", "Gas, Petróleo y Minería", "Lab & Pharma", "Manufactura", "Retail & Comercio", "Servicios", "Transporte y logística"]],
+  ["supply", "Ingeniero de Logística", ["Automotriz", "Consumo masivo", "Gas, Petróleo y Minería", "Lab & Pharma", "Manufactura", "Retail & Comercio", "Servicios", "Transporte y logística"]],
+  ["calidad", "Gerente de Calidad", ["Automotriz", "Consumo masivo", "Gas, Petróleo y Minería", "Lab & Pharma", "Manufactura", "Retail & Comercio", "Servicios"]],
+  ["calidad", "Jefe de Calidad", ["Automotriz", "Consumo masivo", "Gas, Petróleo y Minería", "Lab & Pharma", "Manufactura", "Retail & Comercio", "Servicios"]],
+  ["calidad", "Analista de Calidad", ["Automotriz", "Consumo masivo", "Gas, Petróleo y Minería", "Lab & Pharma", "Manufactura", "Retail & Comercio", "Servicios", "Transporte y logística"]],
+  ["tecnologia", "Responsable de Seguridad Informática", ["Automotriz", "Banca & Serv Financieros", "Consumo masivo", "Gas, Petróleo y Minería", "IT", "Lab & Pharma", "Manufactura", "Retail & Comercio", "Servicios", "Transporte y logística"]],
+  ["tecnologia", "Project Leader", ["Automotriz", "Banca & Serv Financieros", "Consumo masivo", "Gas, Petróleo y Minería", "IT", "Lab & Pharma", "Manufactura", "Retail & Comercio", "Servicios", "Transporte y logística"]],
+  ["tecnologia", "Analista BI", ["Automotriz", "Banca & Serv Financieros", "Consumo masivo", "Gas, Petróleo y Minería", "IT", "Lab & Pharma", "Manufactura", "Retail & Comercio", "Servicios", "Transporte y logística"]],
+  ["tecnologia", "Consultor SAP", ["Automotriz", "Banca & Serv Financieros", "Consumo masivo", "Gas, Petróleo y Minería", "IT", "Lab & Pharma", "Manufactura", "Retail & Comercio", "Servicios", "Transporte y logística"]],
+  ["tecnologia", "Desarrollador Mobile", ["Automotriz", "Banca & Serv Financieros", "Consumo masivo", "Gas, Petróleo y Minería", "IT", "Lab & Pharma", "Manufactura", "Retail & Comercio", "Servicios", "Transporte y logística"]],
+  ["tecnologia", "Administrador de Redes", ["Automotriz", "Banca & Serv Financieros", "Consumo masivo", "Gas, Petróleo y Minería", "IT", "Lab & Pharma", "Manufactura", "Retail & Comercio", "Servicios", "Transporte y logística"]],
+];
+
+const INDUSTRY_OPTIONS = [
+  { id: "Automotriz", label: "Automotriz" },
+  { id: "Banca & Serv Financieros", label: "Banca y Servicios Financieros" },
+  { id: "Consumo masivo", label: "Consumo Masivo" },
+  { id: "Gas, Petróleo y Minería", label: "Gas, Petróleo y Minería" },
+  { id: "IT", label: "Tecnología / IT" },
+  { id: "Lab & Pharma", label: "Laboratorios y Farma" },
+  { id: "Manufactura", label: "Manufactura" },
+  { id: "Retail & Comercio", label: "Retail y Comercio" },
+  { id: "Servicios", label: "Servicios" },
+  { id: "Transporte y logística", label: "Transporte y Logística" },
+];
+
 function randstadEntries(baMin, baMax, natMin, natMax) {
   return [
     { fuente: "Randstad Arg. jul. 2026", segmento: "Buenos Aires (Semi Senior)", min: baMin, max: baMax },
@@ -677,4 +784,12 @@ RANDSTAD_NEW_ROLES.forEach(([areaId, roleName, baMin, baMax, natMin, natMax]) =>
     DATA.areas.push(area);
   }
   area.roles.push({ name: roleName, entries: randstadEntries(baMin, baMax, natMin, natMax) });
+});
+
+RANDSTAD_INDUSTRIES.forEach(([areaId, roleName, industries]) => {
+  const area = DATA.areas.find((a) => a.id === areaId);
+  if (!area) return;
+  const role = area.roles.find((r) => r.name === roleName);
+  if (!role) return;
+  role.industries = industries;
 });
